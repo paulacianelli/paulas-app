@@ -1,0 +1,46 @@
+// Define the database provider
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// User Model
+model User {
+  id        Int    @id @default(autoincrement()) // Unique ID of the user
+  name      String // Name of the user
+  username  String // Username
+  email     String @unique // Email of the user
+  phone     String // Phone number of the user
+  website   String // Website of the user
+
+  // User's address
+  addressStreet  String
+  addressSuite   String
+  addressCity    String
+  addressZipcode String
+  geoLat         Float
+  geoLng         Float
+
+  // User's company
+  companyName    String
+  companyCatchPhrase String
+  companyBs      String
+
+  // One-to-many relationship with posts
+  posts    Post[]   // A user can have many posts
+}
+
+// Post Model
+model Post {
+  id      Int    @id @default(autoincrement()) // Unique ID of the post
+  title   String // Title of the post
+  body    String // Body of the post
+
+  // Relationship with the user (a post belongs to a single user)
+  userId  Int // Foreign key to the User model
+  user    User @relation(fields: [userId], references: [id]) // Relationship with User
+}
