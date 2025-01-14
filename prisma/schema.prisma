@@ -1,46 +1,49 @@
-// Define the database provider
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db"
+  url      = env("DATABASE_URL")
 }
 
-// User Model
 model User {
-  id        Int    @id @default(autoincrement()) // Unique ID of the user
-  name      String // Name of the user
-  username  String // Username
-  email     String @unique // Email of the user
-  phone     String // Phone number of the user
-  website   String // Website of the user
-
-  // User's address
-  addressStreet  String
-  addressSuite   String
-  addressCity    String
-  addressZipcode String
-  geoLat         Float
-  geoLng         Float
-
-  // User's company
-  companyName    String
-  companyCatchPhrase String
-  companyBs      String
-
-  // One-to-many relationship with posts
-  posts    Post[]   // A user can have many posts
+  id        Int    @id    @default(autoincrement())
+  name      String
+  username  String
+  email     String  @unique
+  phone     String
+  website   String
+  address_street  String
+  address_suite   String
+  address_city    String
+  address_zipcode String
+  address_lat     String
+  address_lng     String
+  company_name    String
+  company_catch_phrase String
+  company_bs      String
+  posts    Post[]
 }
 
-// Post Model
 model Post {
-  id      Int    @id @default(autoincrement()) // Unique ID of the post
-  title   String // Title of the post
-  body    String // Body of the post
-
-  // Relationship with the user (a post belongs to a single user)
-  userId  Int // Foreign key to the User model
-  user    User @relation(fields: [userId], references: [id]) // Relationship with User
+  id      Int    @id @default(autoincrement())
+  title   String
+  body    String
+  userId  Int
+  user    User @relation(fields: [userId], references: [id])
 }
+
+/*
+ * This file is located at /home/paula/paulas-app/prisma/schema.prisma
+ * 
+ * To run a seed, you need to:
+ * 1. Ensure you have the necessary environment variables set up.
+ * 2. Run the seed command using the Prisma CLI.
+ * 3. Verify that the seed data has been correctly inserted into your database.
+ * 4. To run the seed: 
+ *    npx prisma db seed --preview-feature
+ */
+
+
+
